@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@400;700&display=swap');
+
+:root {
+  --cream: #f5f0e8;
+  --parchment: #ede4d0;
+  --espresso: #1a0f07;
+  --roast: #3d1f0a;
+  --caramel: #b87333;
+  --honey: #d4882b;
+  --text: #2c1a0e;
+  --subtle: #8a7060;
+  --card: #faf7f2;
+  --border: #d6c9b0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cream: #1a0f07;
+    --parchment: #2c1a0e;
+    --espresso: #f5f0e8;
+    --roast: #ede4d0;
+    --card: #2c1a0e;
+    --border: #3d1f0a;
+  }
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(184, 115, 51, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(196, 75, 30, 0.04) 0%, transparent 50%);
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
