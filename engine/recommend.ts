@@ -1,4 +1,4 @@
-import { Context, RecipeSpec, Recommendation, Reason } from "./types";
+import { Context, RecipeSpec, Recommendation, Reason, Explanation } from "./types";
 import { getTemplateById } from "./templates";
 import {
   processingAdjuster,
@@ -8,6 +8,7 @@ import {
   grinderAdjuster,
 } from "./adjusters";
 import { Brewer, getBrewerById } from "@/catalog";
+import { buildSummary } from "./explain";
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
@@ -82,8 +83,9 @@ export function generateRecommendation(
   const templateId = brewer.default_template_id;
   let spec = getTemplateById(templateId, finalContext.brew.dose_g);
 
-  // Collect all reasons
+  // Collect all reasons and explanations
   const allReasons: Reason[] = [];
+  const allExplanations: Explanation[] = [];
 
   // Apply adjusters in sequence
   const adjusters = [
@@ -98,6 +100,9 @@ export function generateRecommendation(
     const result = adjuster(spec, finalContext);
     spec = result.spec;
     allReasons.push(...result.reasons);
+    if (result.explanations) {
+      allExplanations.push(...result.explanations);
+    }
   }
 
   // Clamp values
@@ -126,7 +131,14 @@ export function generateRecommendation(
       factor: "Brewer auto-selection",
       explanation: "Switch chosen for sweet-focused high-altitude washed light roast to maximize sweetness and body",
     });
+    allExplanations.unshift({
+      category: "brewer",
+      text: "We chose the Switch for its immersion-percolation hybrid to maximize sweetness and body.",
+    });
   }
+
+  // Build summary
+  const summary = buildSummary(finalContext, allExplanations, spec);
 
   return {
     spec,
@@ -136,5 +148,7 @@ export function generateRecommendation(
     brewer: finalContext.brew.brewer,
     filter: finalContext.brew.filter,
     grinder: finalContext.brew.grinder,
+    summary,
+    explanations: allExplanations,
   };
 }

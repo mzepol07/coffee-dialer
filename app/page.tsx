@@ -4,9 +4,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { grinders, brewers, filters, getFiltersForBrewer } from "@/catalog";
 import type { Processing, Roast, Goal } from "@/catalog";
+import FeedbackModal from "./components/FeedbackModal";
+import Tooltip from "./components/Tooltip";
+import { processingTooltip, roastTooltip, altitudeTooltip, originTooltip } from "@/content/tooltips";
 
 export default function Home() {
   const router = useRouter();
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   const [grinderId, setGrinderId] = useState(grinders[0].id);
   const [brewerId, setBrewerId] = useState<string>("auto");
@@ -72,6 +76,17 @@ export default function Home() {
           <p className="text-sm max-w-md mx-auto" style={{ color: "var(--subtle)", lineHeight: "1.75" }}>
             Get a personalized pour-over recipe based on your equipment and beans
           </p>
+          <div className="mt-6 text-center text-xs space-y-2" style={{ color: "var(--subtle)" }}>
+            <p>
+              <button
+                onClick={() => setShowFeedbackModal(true)}
+                style={{ color: "var(--caramel)", textDecoration: "none", background: "none", border: "none", cursor: "pointer" }}
+                className="hover:underline font-medium"
+              >
+                Feedback & Resources
+              </button>
+            </p>
+          </div>  
         </div>
 
         <form onSubmit={handleSubmit} className="fade-in">
@@ -151,7 +166,10 @@ export default function Home() {
             </p>
 
             <div className="form-field">
-              <label className="form-label">Processing Method</label>
+              <label className="form-label">
+                Processing Method
+                <Tooltip content={processingTooltip} />
+              </label>
               <select
                 value={processing}
                 onChange={(e) => setProcessing(e.target.value as Processing)}
@@ -165,7 +183,10 @@ export default function Home() {
             </div>
 
             <div className="form-field">
-              <label className="form-label">Roast Level</label>
+              <label className="form-label">
+                Roast Level
+                <Tooltip content={roastTooltip} />
+              </label>
               <select
                 value={roast}
                 onChange={(e) => setRoast(e.target.value as Roast)}
@@ -178,7 +199,10 @@ export default function Home() {
             </div>
 
             <div className="form-field">
-              <label className="form-label">Altitude (feet, optional)</label>
+              <label className="form-label">
+                Altitude (feet, optional)
+                <Tooltip content={altitudeTooltip} />
+              </label>
               <input
                 type="number"
                 value={altitudeFt}
@@ -189,7 +213,10 @@ export default function Home() {
             </div>
 
             <div className="form-field">
-              <label className="form-label">Origin Country (optional)</label>
+              <label className="form-label">
+                Origin Country (optional)
+                <Tooltip content={originTooltip} />
+              </label>
               <input
                 type="text"
                 value={originCountry}
@@ -242,9 +269,23 @@ export default function Home() {
           </button>
         </form>
 
-        <div className="mt-8 text-center text-xs" style={{ color: "var(--subtle)" }}>
-          <p>Open source on <a href="https://github.com" style={{ color: "var(--caramel)", textDecoration: "none" }} className="hover:underline">GitHub</a></p>
+        <div className="mt-8 text-center text-xs space-y-2" style={{ color: "var(--subtle)" }}>
+          <p>
+            <button
+              onClick={() => setShowFeedbackModal(true)}
+              style={{ color: "var(--caramel)", textDecoration: "none", background: "none", border: "none", cursor: "pointer" }}
+              className="hover:underline font-medium"
+            >
+              Feedback & Resources
+            </button>
+          </p>
+          <p>Open source on <a href="https://github.com/mzepol07/coffee-dialer" style={{ color: "var(--caramel)", textDecoration: "none" }} className="hover:underline">GitHub</a></p>
         </div>
+
+        <FeedbackModal
+          isOpen={showFeedbackModal}
+          onClose={() => setShowFeedbackModal(false)}
+        />
       </div>
     </main>
   );
