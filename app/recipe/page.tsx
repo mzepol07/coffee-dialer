@@ -2,14 +2,16 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { getGrinderById, getBrewerById, getFilterById } from "@/catalog";
 import type { Processing, Roast, Goal } from "@/catalog";
 import { generateRecommendation } from "@/engine";
 import type { Context } from "@/engine";
+import FeedbackModal from "../components/FeedbackModal";
 
 function RecipeContent() {
   const searchParams = useSearchParams();
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
   const grinderId = searchParams.get("grinder") || "k_ultra";
   const brewerId = searchParams.get("brewer") || "auto";
@@ -53,7 +55,7 @@ function RecipeContent() {
   };
 
   const recommendation = generateRecommendation(context, brewerId);
-  const { spec, grind_setting, grind_zone, reasons, brewer: finalBrewer } = recommendation;
+  const { spec, grind_setting, grind_zone, reasons, brewer: finalBrewer, summary } = recommendation;
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -80,6 +82,13 @@ function RecipeContent() {
           <p className="recipe-subheader">
             {finalBrewer.name} • {filter.name} • {grinder.name}
           </p>
+
+          {/* Summary */}
+          <div className="summary-box">
+            <p className="summary-text">
+              {summary}
+            </p>
+          </div>
 
           {/* Recipe Overview */}
           <div className="recipe-overview-grid">
@@ -147,7 +156,7 @@ function RecipeContent() {
                 </div>
               ))}
               <div className="target-time-box">
-                <p className="text-sm" style={{ color: "var(--text)" }}>
+                <p className="text-sm" style={{ color: "var(--espresso)" }}>
                   <span className="font-semibold">Target finish:</span>{" "}
                   {formatTime(spec.target_time_s_min)}–{formatTime(spec.target_time_s_max)}
                 </p>
@@ -188,6 +197,22 @@ function RecipeContent() {
             />
           </div>
         </div>
+
+        {/* Footer links */}
+        <div className="mt-6 text-center text-xs" style={{ color: "var(--subtle)" }}>
+          <button
+            onClick={() => setShowFeedbackModal(true)}
+            style={{ color: "var(--caramel)", textDecoration: "none", background: "none", border: "none", cursor: "pointer" }}
+            className="hover:underline font-medium"
+          >
+            Feedback & Resources
+          </button>
+        </div>
+
+        <FeedbackModal
+          isOpen={showFeedbackModal}
+          onClose={() => setShowFeedbackModal(false)}
+        />
       </div>
     </main>
   );

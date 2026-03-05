@@ -1,7 +1,7 @@
 export type GrinderType = "manual" | "electric";
 export type BurrType = "conical" | "flat";
 export type FinesBias = "low" | "medium" | "high";
-export type ScaleType = "clicks" | "steps" | "stepless" | "rotations" | "notches";
+export type ScaleType = "clicks" | "steps" | "stepless" | "rotations" | "notches" | "digital" | "other";
 
 export interface GrindRange {
   fine_range: string;

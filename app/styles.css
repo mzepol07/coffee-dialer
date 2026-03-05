@@ -282,6 +282,18 @@ html {
   background: rgba(184, 115, 51, 0.07);
 }
 
+/* Summary Box */
+.summary-box {
+  @apply mt-6 mb-6 p-4 rounded-xl border-l-4;
+  background: var(--parchment);
+  border-color: var(--caramel);
+}
+
+.summary-text {
+  @apply text-sm leading-relaxed m-0;
+  color: var(--espresso);
+}
+
 /* Reasons Section */
 .reasons-section {
   @apply mb-8;
@@ -313,8 +325,8 @@ html {
 }
 
 .reason-text {
-  @apply text-sm leading-relaxed;
-  color: var(--text);
+  @apply font-medium text-sm mb-0;
+  color: var(--espresso);
 }
 
 .reason-text strong {

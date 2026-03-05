@@ -46,9 +46,17 @@ export interface Reason {
   explanation: string;
 }
 
+export type ExplanationCategory = "coffee" | "brewer" | "grind" | "pour" | "filter" | "water" | "general";
+
+export interface Explanation {
+  category: ExplanationCategory;
+  text: string;
+}
+
 export interface AdjustmentResult {
   spec: RecipeSpec;
   reasons: Reason[];
+  explanations?: Explanation[];
 }
 
 export type Adjuster = (spec: RecipeSpec, context: Context) => AdjustmentResult;
@@ -61,4 +69,6 @@ export interface Recommendation {
   brewer: Brewer;
   filter: Filter;
   grinder: Grinder;
+  summary: string;
+  explanations?: Explanation[];
 }

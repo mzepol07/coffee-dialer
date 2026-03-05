@@ -19,6 +19,10 @@ An open-source web app that generates personalized pour-over coffee recipes base
 
 - **Shareable**: Each recipe has a unique URL you can bookmark or share
 
+- **Community Feedback**: Built-in feedback modal with links to GitHub, Google Docs, and helpful resources
+
+- **Helpful Tooltips**: Contextual information on processing methods, roast levels, altitude, and origin to help users understand how each factor affects extraction
+
 ## Demo
 
 Visit the live app: [Deploy on Vercel to get URL]

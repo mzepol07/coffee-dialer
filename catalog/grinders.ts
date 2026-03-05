@@ -3,7 +3,7 @@ import { Grinder } from "./types";
 export const grinders: Grinder[] = [
   {
     id: "k_ultra",
-    name: "1zpresso K-Ultra",
+    name: "1Zpresso K-Ultra",
     grinder_type: "manual",
     burr_type: "conical",
     fines_bias: "medium",
@@ -207,6 +207,45 @@ export const grinders: Grinder[] = [
       fine_range: "8–14",
       medium_range: "14–22",
       coarse_range: "22–28",
+    },
+  },
+  {
+    id: "breville_bcg820bss",
+    name: "Breville Smart Grinder Pro",
+    grinder_type: "electric",
+    burr_type: "conical",
+    fines_bias: "medium",
+    scale_type: "digital",
+    ranges: {
+      fine_range: "21–30",
+      medium_range: "31-40",
+      coarse_range: "41–60",
+    },
+  },
+  {
+    id: "breville_bcg400",
+    name: "Breville Dose Control",
+    grinder_type: "electric",
+    burr_type: "conical",
+    fines_bias: "high",
+    scale_type: "steps",
+    ranges: {
+      fine_range: "21–30",
+      medium_range: "31-40",
+      coarse_range: "41–60",
+    },
+  },
+  {
+    id: "breville_bcg600",
+    name: "Breville Dose Control Pro",
+    grinder_type: "electric",
+    burr_type: "conical",
+    fines_bias: "medium",
+    scale_type: "steps",
+    ranges: {
+      fine_range: "21–30",
+      medium_range: "31-40",
+      coarse_range: "41–60",
     },
   },
   {
