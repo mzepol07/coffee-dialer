@@ -11,7 +11,7 @@ export const roastAdjuster: Adjuster = (spec, context) => {
       newSpec.temp_f += 2;
       reasons.push({
         factor: "Light roast",
-        explanation: "Denser beans require hotter water (+2°F) for better extraction",
+        explanation: "Denser beans require hotter water (+2°F/+1°C) for better extraction",
       });
       explanations.push({
         category: "coffee",
@@ -28,7 +28,7 @@ export const roastAdjuster: Adjuster = (spec, context) => {
       newSpec.grind_index += 0.2;
       reasons.push({
         factor: "Medium roast",
-        explanation: "More developed beans extract easily; cooler water (-3°F) and coarser grind prevent bitterness",
+        explanation: "More developed beans extract easily; cooler water (-3°F/-2°C) and coarser grind prevent bitterness",
       });
       explanations.push({
         category: "coffee",

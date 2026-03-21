@@ -15,6 +15,8 @@ A fully functional, open-source Next.js web application that generates personali
 - ✅ Composable rules engine with 5 adjusters
 - ✅ Grind setting mapping to specific grinder scales
 - ✅ Shareable URLs via query parameters
+- ✅ **Coffee blend handling** with intelligent processing logic
+- ✅ Temperature display in both Fahrenheit and Celsius
 
 ### Architecture
 - ✅ Catalog system with typed data (grinders, brewers, filters)
@@ -47,25 +49,30 @@ A fully functional, open-source Next.js web application that generates personali
 - ✅ ADDING_CATALOG_ITEMS.md with detailed instructions
 - ✅ QUICKSTART.md for rapid onboarding
 - ✅ GitHub issue template for adding grinders
+- ✅ **BLEND_HANDLING.md** with comprehensive blend logic documentation
 
 ## Rules Engine Behavior
 
 ### Adjusters Implemented
 1. **Processing Adjuster**
-   - Washed: +3°F, finer grind, more agitation
-   - Honey: -2°F, coarser grind, less agitation
-   - Pulped Natural: -3°F, coarser grind, minimal agitation
-   - Natural/Anaerobic: -5°F, very coarse grind, minimal agitation
+   - Washed: +3°F (+2°C), finer grind, more agitation
+   - Honey: -2°F (-1°C), coarser grind, less agitation
+   - Pulped Natural: -3°F (-2°C), coarser grind, minimal agitation
+   - Natural/Anaerobic: -5°F (-3°C), very coarse grind, minimal agitation
+   - Natural: -5°F (-3°C), coarse grind, minimal agitation
+   - Anaerobic: -5°F (-3°C), coarse grind, minimal agitation
+   - Wet Hulled: -2°F (-1°C), coarser grind, gentler approach
+   - **Blend/Mixed/Unknown: 0°F (0°C), balanced defaults, roast-driven**
 
 2. **Roast Adjuster**
-   - Light: +2°F (denser beans)
+   - Light: +2°F (+1°C) (denser beans)
    - Medium-Light: baseline
-   - Medium: -3°F, coarser grind
+   - Medium: -3°F (-2°C), coarser grind
 
 3. **Altitude Adjuster**
-   - ≥6000ft: +3°F, finer grind (very dense beans)
-   - 4500-6000ft: +1°F
-   - <4500ft: -1°F, coarser grind
+   - ≥6000ft: +3°F (+2°C), finer grind (very dense beans)
+   - 4500-6000ft: +1°F (+0.5°C)
+   - <4500ft: -1°F (-0.5°C), coarser grind
 
 4. **Filter Adjuster**
    - Slow flow: coarser grind, less agitation
@@ -82,9 +89,33 @@ A fully functional, open-source Next.js web application that generates personali
 - Special case: Switch chosen when goal=sweet AND processing=washed AND roast=light AND altitude≥6000
 
 ### Constraints
-- Temperature: 195-212°F
+- Temperature: 195-212°F (91-100°C)
 - Grind index: 0-2 (0=fine, 1=medium, 2=coarse)
 - Pour plan totals always match final water amount
+
+### Blend Handling
+
+The system intelligently handles coffee blends without defaulting to "washed" processing:
+
+**Processing Types:**
+- Standard: washed, honey, pulped_natural, natural, natural_anaerobic, anaerobic, wet_hulled
+- Blend-specific: mixed, blend, unknown
+
+**Blend Logic:**
+1. **Single-origin** → Use provided processing method normally
+2. **Uniform blend** (all components same) → Use that processing method
+3. **Mixed processing blend** → Set to "mixed", use balanced defaults
+4. **Unknown blend** → Set to "blend" or "unknown", never default to washed
+
+**Balanced Defaults for Blends:**
+- No processing-based temperature adjustment (0°F/0°C)
+- Medium grind baseline
+- Standard agitation
+- Roast level becomes primary driver
+- Brew method is secondary driver
+- Summary emphasizes "adjust by taste"
+
+**See:** `docs/BLEND_HANDLING.md` for comprehensive documentation
 
 ## Example Recipes Generated
 
@@ -129,15 +160,20 @@ coffee-dialer/
 │   ├── types.ts              # Engine types
 │   ├── templates.ts          # 3 templates
 │   ├── recommend.ts          # Main orchestration
-│   └── adjusters/
-│       ├── processingAdjuster.ts
-│       ├── roastAdjuster.ts
-│       ├── altitudeAdjuster.ts
-│       ├── filterAdjuster.ts
-│       ├── grinderAdjuster.ts
-│       └── index.ts
+│   ├── explain.ts            # Summary generation
+│   ├── blendUtils.ts         # Blend processing utilities
+│   ├── adjusters/
+│   │   ├── processingAdjuster.ts
+│   │   ├── roastAdjuster.ts
+│   │   ├── altitudeAdjuster.ts
+│   │   ├── filterAdjuster.ts
+│   │   ├── grinderAdjuster.ts
+│   │   └── index.ts
+│   └── __tests__/
+│       └── blendHandling.test.ts
 ├── docs/
-│   └── ADDING_CATALOG_ITEMS.md
+│   ├── ADDING_CATALOG_ITEMS.md
+│   └── BLEND_HANDLING.md
 ├── .github/
 │   └── ISSUE_TEMPLATE/
 │       └── add_grinder.md

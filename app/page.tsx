@@ -21,6 +21,7 @@ export default function Home() {
   const [doseG, setDoseG] = useState(15);
   const [altitudeFt, setAltitudeFt] = useState("");
   const [originCountry, setOriginCountry] = useState("");
+  const [isBlend, setIsBlend] = useState(false);
 
   // Set default filter when brewer changes
   useEffect(() => {
@@ -53,6 +54,7 @@ export default function Home() {
 
     if (altitudeFt) params.set("altitude", altitudeFt);
     if (originCountry) params.set("origin", originCountry);
+    if (isBlend) params.set("isBlend", "true");
 
     router.push(`/recipe?${params.toString()}`);
   };
@@ -170,6 +172,17 @@ export default function Home() {
                 Processing Method
                 <Tooltip content={processingTooltip} />
               </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={isBlend}
+                    onChange={(e) => setIsBlend(e.target.checked)}
+                    className="checkbox-input"
+                  />
+                  <span className="checkbox-text">This is a blend</span>
+                </label>
+
               <select
                 value={processing}
                 onChange={(e) => setProcessing(e.target.value as Processing)}
@@ -178,7 +191,12 @@ export default function Home() {
                 <option value="washed">Washed</option>
                 <option value="honey">Honey</option>
                 <option value="pulped_natural">Pulped Natural</option>
+                <option value="natural">Natural</option>
                 <option value="natural_anaerobic">Natural/Anaerobic</option>
+                <option value="anaerobic">Anaerobic</option>
+                <option value="wet_hulled">Wet Hulled</option>
+                {isBlend && <option value="mixed">Mixed Processing</option>}
+                {isBlend && <option value="unknown">Unknown</option>}
               </select>
             </div>
 

@@ -22,6 +22,7 @@ function RecipeContent() {
   const doseG = Number(searchParams.get("dose") || "15");
   const altitudeFt = searchParams.get("altitude") ? Number(searchParams.get("altitude")) : undefined;
   const originCountry = searchParams.get("origin") || undefined;
+  const isBlend = searchParams.get("isBlend") === "true";
 
   const grinder = getGrinderById(grinderId);
   const initialBrewer = brewerId === "auto" ? getBrewerById("v60_plastic") : getBrewerById(brewerId);
@@ -45,6 +46,7 @@ function RecipeContent() {
       origin_country: originCountry,
       altitude_ft: altitudeFt,
       goal,
+      is_blend: isBlend,
     },
     brew: {
       grinder,
@@ -106,7 +108,7 @@ function RecipeContent() {
             </div>
             <div className="recipe-overview-item">
               <div className="recipe-overview-item-label">Temp</div>
-              <div className="recipe-overview-item-value">{Math.round(spec.temp_f)}°F</div>
+              <div className="recipe-overview-item-value">{Math.round(spec.temp_f)}°F ({Math.round((spec.temp_f - 32) * 5 / 9)}°C)</div>
             </div>
           </div>
 

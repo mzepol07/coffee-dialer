@@ -15,7 +15,7 @@ export const altitudeAdjuster: Adjuster = (spec, context) => {
     newSpec.grind_index -= 0.1;
     reasons.push({
       factor: "High altitude (≥6000ft)",
-      explanation: "Very dense, hard beans require hotter water (+3°F) and finer grind for proper extraction",
+      explanation: "Very dense, hard beans require hotter water (+3°F/+2°C) and finer grind for proper extraction",
     });
     explanations.push({
       category: "coffee",
@@ -25,7 +25,7 @@ export const altitudeAdjuster: Adjuster = (spec, context) => {
     newSpec.temp_f += 1;
     reasons.push({
       factor: "Medium-high altitude (4500-6000ft)",
-      explanation: "Dense beans benefit from slightly hotter water (+1°F)",
+      explanation: "Dense beans benefit from slightly hotter water (+1°F/+0.5°C)",
     });
     // Don't add explanation for medium-high - minor adjustment
   } else {
@@ -33,7 +33,7 @@ export const altitudeAdjuster: Adjuster = (spec, context) => {
     newSpec.grind_index += 0.1;
     reasons.push({
       factor: "Lower altitude (<4500ft)",
-      explanation: "Softer beans extract more easily; slightly cooler water (-1°F) and coarser grind",
+      explanation: "Softer beans extract more easily; slightly cooler water (-1°F/-0.5°C) and coarser grind",
     });
     // Don't add explanation for lower altitude - minor adjustment
   }
