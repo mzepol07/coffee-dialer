@@ -36,9 +36,6 @@ export const altitudeTooltip: ReactNode = (
     <div>
       Denser beans may need more extraction energy (hotter water, finer grind) to fully express flavor.
     </div>
-    <div style={{ fontStyle: "italic", color: "var(--subtle)" }}>
-      Optional field—just a small nudge to the recipe, not required.
-    </div>
   </div>
 );
 

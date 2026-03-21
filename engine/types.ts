@@ -27,6 +27,8 @@ export interface CoffeeContext {
   origin_country?: string;
   altitude_ft?: number;
   goal: Goal;
+  is_blend?: boolean;
+  processing_components?: string[] | null;
 }
 
 export interface BrewContext {

@@ -41,6 +41,6 @@ export interface Filter {
   compatible_brewers: string[];
 }
 
-export type Processing = "washed" | "honey" | "pulped_natural" | "natural_anaerobic";
+export type Processing = "washed" | "honey" | "pulped_natural" | "natural_anaerobic" | "natural" | "anaerobic" | "wet_hulled" | "mixed" | "blend" | "unknown";
 export type Roast = "light" | "medium_light" | "medium";
 export type Goal = "clarity" | "balanced" | "sweet";

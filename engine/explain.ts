@@ -1,4 +1,5 @@
 import { Context, Explanation, RecipeSpec } from "./types";
+import { shouldUseBalancedDefaults, getProcessingDisplayLabel } from "./blendUtils";
 
 // Category priority order for selecting explanations
 const CATEGORY_PRIORITY: Record<string, number> = {
@@ -30,7 +31,15 @@ export function buildSummary(
   const processingText = formatProcessing(coffee.processing);
   const goalText = formatGoal(coffee.goal);
 
-  const intro = `You are brewing a ${processingText} processed coffee with a ${brew.brewer.name} aiming for a ${goalText} cup.`;
+  // Special intro for blends with balanced defaults
+  let intro: string;
+  if (shouldUseBalancedDefaults(coffee.processing)) {
+    intro = `You are brewing a blend with a ${brew.brewer.name} aiming for a ${goalText} cup. Start with this balanced recipe and adjust by taste.`;
+  } else if (coffee.is_blend) {
+    intro = `You are brewing a ${processingText} processed blend with a ${brew.brewer.name} aiming for a ${goalText} cup.`;
+  } else {
+    intro = `You are brewing a ${processingText} processed coffee with a ${brew.brewer.name} aiming for a ${goalText} cup.`;
+  }
 
   // Deduplicate explanations by category (keep only the first per category)
   const seenCategories = new Set<string>();
@@ -66,6 +75,18 @@ function formatProcessing(processing: string): string {
       return "pulped natural";
     case "natural_anaerobic":
       return "natural/anaerobic";
+    case "natural":
+      return "natural";
+    case "anaerobic":
+      return "anaerobic";
+    case "wet_hulled":
+      return "wet hulled";
+    case "mixed":
+      return "mixed processing";
+    case "blend":
+      return "blend";
+    case "unknown":
+      return "unknown processing";
     default:
       return processing;
   }
